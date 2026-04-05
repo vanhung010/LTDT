@@ -1,8 +1,6 @@
 package ltdt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public abstract class Graph {
 
@@ -27,7 +25,18 @@ public abstract class Graph {
 		System.out.println("Bậc của đỉnh "+i+" là: "+ degree(i));
 		}
 	}
-	
+
+
+	public Set<Integer> getVer(){
+		Set<Integer> result = new HashSet<>();
+		for(int i =0; i<adjMatrix.length; i++){
+			for(int j=0; j<adjMatrix.length;j++){
+				if(adjMatrix[i][j]>0) result.add(i);
+			}
+		}
+		return result;
+	}
+
 	public void printAdj() {
 		for(int i = 0; i< adjMatrix.length; i++) {
 			for(int j=0; j< adjMatrix[i].length; j++) {
@@ -60,6 +69,28 @@ public abstract class Graph {
 
 		}
 	}
+	public void printADJWithBFS(int start){
+		Queue<Integer> queue = new LinkedList<>();
+
+
+		List<Integer> visted = new ArrayList<>();
+
+		queue.add(start);
+
+		while(!queue.isEmpty()){
+			int i = queue.poll();
+			if(!visted.contains(i)){
+				System.out.print(i+" ");
+				visted.add(i);
+				for(int j = 0; j < adjMatrix.length; j++){
+					if(adjMatrix[i][j] > 0 && !visted.contains(j)){
+						queue.add(j);
+					}
+				}
+			}
+		}
+	}
+
 
 
 
@@ -81,12 +112,6 @@ public abstract class Graph {
 
 		matrix1.printADJWithDFS(0);
 
-
-
-
-		
-		
+		matrix1.printADJWithBFS(0);
 	}
-	
-	
 }
