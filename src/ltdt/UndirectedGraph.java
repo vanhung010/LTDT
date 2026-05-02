@@ -1,5 +1,7 @@
 package ltdt;
 
+import java.util.Stack;
+
 public class UndirectedGraph extends Graph {
 
 	public UndirectedGraph(int ver) {
@@ -42,6 +44,60 @@ public class UndirectedGraph extends Graph {
 		}
 		return degree;
 		
+	}
+
+	private boolean isConnectedIgnoreZeroDegree() {
+		int start = -1;
+		for (int i = 0; i < adjMatrix.length; i++) {
+			if (degree(i) > 0) {
+				start = i;
+				break;
+			}
+		}
+
+		// Không có cạnh: xem như thỏa điều kiện liên thông cho bài toán Euler.
+		if (start == -1) return true;
+
+		boolean[] visited = new boolean[adjMatrix.length];
+		Stack<Integer> stack = new Stack<>();
+		stack.push(start);
+
+		while (!stack.isEmpty()) {
+			int v = stack.pop();
+			if (visited[v]) continue;
+			visited[v] = true;
+			for (int j = 0; j < adjMatrix.length; j++) {
+				if (adjMatrix[v][j] > 0 && !visited[j]) {
+					stack.push(j);
+				}
+			}
+		}
+
+		for (int i = 0; i < adjMatrix.length; i++) {
+			if (degree(i) > 0 && !visited[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isEuler() {
+		if (!isConnectedIgnoreZeroDegree()) return false;
+		for (int i = 0; i < adjMatrix.length; i++) {
+			if (degree(i) % 2 != 0) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isSemiEuler() {
+		if (!isConnectedIgnoreZeroDegree()) return false;
+		int oddCount = 0;
+		for (int i = 0; i < adjMatrix.length; i++) {
+			if (degree(i) % 2 != 0) oddCount++;
+		}
+		return oddCount == 2;
 	}
 
 }

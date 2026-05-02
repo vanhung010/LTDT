@@ -20,6 +20,8 @@ public abstract class Graph {
 	public abstract void addEdge(int start, int destination);
 	public abstract void printListEdge();
 	public abstract int degree(int ver);
+	public abstract boolean isEuler();
+	public abstract boolean isSemiEuler();
 //in bậc
 	public void printDegree() {
 		for (int i = 0; i < adjMatrix.length; i++) {
