@@ -1,5 +1,7 @@
 package ltdt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class UndirectedGraph extends Graph {
@@ -12,7 +14,6 @@ public class UndirectedGraph extends Graph {
 	@Override
 	public void addEdge(int start, int destination) {
 		adjMatrix [start][destination] += 1;
-		 
 		if(start != destination) {
 			adjMatrix [destination][start] +=1;
 		}
@@ -46,6 +47,7 @@ public class UndirectedGraph extends Graph {
 		
 	}
 
+	//kiểm tra đồ thị liên thông
 	private boolean isConnectedIgnoreZeroDegree() {
 		int start = -1;
 		for (int i = 0; i < adjMatrix.length; i++) {
@@ -98,6 +100,63 @@ public class UndirectedGraph extends Graph {
 			if (degree(i) % 2 != 0) oddCount++;
 		}
 		return oddCount == 2;
+	}
+
+	public void removeEdge(int start, int destination, int [][] matrix){
+		//nếu là cung
+		if(adjMatrix[start][destination] <= 0) {
+			return;
+		}
+
+		adjMatrix[start][destination]--;
+		adjMatrix[destination][start]--;
+	}
+
+	//tìm cạnh kề
+	public int findAdjacent(int ver, int[][] matrix){
+
+		for(int i =0; i< adjMatrix.length; i++){
+			if(matrix[ver][i] >0){
+				return i;
+			}
+		}
+		//tìm không thấy return -1
+		return -1;
+	}
+
+	public List<Integer> findEulerPath(){
+
+		if (!isEuler()) return null;
+
+		int length = adjMatrix.length;
+		int verStart =0;
+		//clone đồ thị
+		int [][] adj = new int[length][length];
+		for(int i =0; i<length; i++){
+			adj[i] = adjMatrix[i].clone();
+		}
+		//Bước 2 triển khai
+		Stack<Integer> stack = new Stack<>();
+		List<Integer> path = new ArrayList<>();
+		stack.push(verStart);
+		//chayj đến khi đồ thị rỗng
+		while(!stack.isEmpty()){
+			int currEdge = stack.peek();
+			//tìm cạnh kề
+			int nextVer = findAdjacent(currEdge, adj);
+
+			if(nextVer != -1){
+				//nếu còn đường đi thì xóa cạnh
+				removeEdge(currEdge, nextVer, adj);
+				//dịch chuyển sang điểm mới
+				stack.push(nextVer);
+			}
+			else {
+				//nếu hết đường thì ta Pop đỉnh hiện tại ra stack theem vào path
+				path.add(stack.pop());
+			}
+		}
+		return path.reversed();
 	}
 
 }
