@@ -5,17 +5,11 @@ import java.util.*;
 public abstract class Graph {
 
 	protected int[][] adjMatrix;
-	
-	
-	
-	
+
 	public Graph(int ver) {
 		super();
 		adjMatrix = new int[ver][ver];
 	}
-
-
-
 
 	public abstract void addEdge(int start, int destination);
 	public abstract void printListEdge();
@@ -65,18 +59,20 @@ public abstract class Graph {
 	}
 //Duyệt các phần tử bẳng DFS
 	public List<Integer> ADJWithDFS(int start){
+
 		List<Integer> result = new ArrayList<>();
 		boolean[] visted = new boolean[adjMatrix.length];
-		int count = 0;
+
 		Stack<Integer> stack = new Stack<>();
 		stack.push(start);
 		while(!stack.isEmpty()){
+
 			int i = stack.pop();
 			if(visted[i] == false){
 				result.add(i);
 				visted[i] = true;
-				count++;
 			}
+			//tìm đỉnh kề maf chưa được thăm
 			for(int j=0; j<adjMatrix.length; j++){
 				if(adjMatrix[i][j] > 0 && visted[j] == false){
 					stack.push(j);
@@ -129,7 +125,7 @@ public abstract class Graph {
 		}
 		return count;
 	}
-//Lấy thành phần liên thông chưa đỉnh
+//Lấy thành phần liên thông chứa đỉnh
 	public List<Integer> getConnectHasVer(int ver1){
 		List<Integer> ver = new ArrayList<>();
 		for(int i = 0; i< adjMatrix.length; i++){

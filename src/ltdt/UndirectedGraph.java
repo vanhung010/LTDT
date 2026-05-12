@@ -205,31 +205,31 @@ public class UndirectedGraph extends Graph {
 
 	}
 
-	private int[] graphColoringWithWelshPmell(){
-		Map<Integer, Integer> ver = new TreeMap<>(descComparator);
-		int n = adjMatrix.length;
-		//duyệt qua từng đỉnh, thêm dữ liệu vào var
-		for(int i =0; i< n; i++){
-			ver.put(i, degree(i));
-		}
-		int [] color = new int[n];
-		//đánh dấu đỉnh được tô màu
-		boolean [] isColor = new boolean[n];
-		Arrays.fill(isColor, false);
-
-		int colorNumber =1;
-
-		//duyệt qua từng đỉnh
-		for(Map.Entry<Integer, Integer> entry : ver.entrySet()){
-			if(isColor[entry.getKey()] == false){
-				//nếu chưa được tô màu
-				//thực hiênj tô màu cho đỉnh đó
-				color[entry.getKey()] = colorNumber;
-				//thực hiện tô màu cho các đỉnh không kề
-			}
-		}
-
-	}
+//	private int[] graphColoringWithWelshPmell(){
+//		Map<Integer, Integer> ver = new TreeMap<>(descComparator);
+//		int n = adjMatrix.length;
+//		//duyệt qua từng đỉnh, thêm dữ liệu vào var
+//		for(int i =0; i< n; i++){
+//			ver.put(i, degree(i));
+//		}
+//		int [] color = new int[n];
+//		//đánh dấu đỉnh được tô màu
+//		boolean [] isColor = new boolean[n];
+//		Arrays.fill(isColor, false);
+//
+//		int colorNumber =1;
+//
+//		//duyệt qua từng đỉnh
+//		for(Map.Entry<Integer, Integer> entry : ver.entrySet()){
+//			if(isColor[entry.getKey()] == false){
+//				//nếu chưa được tô màu
+//				//thực hiênj tô màu cho đỉnh đó
+//				color[entry.getKey()] = colorNumber;
+//				//thực hiện tô màu cho các đỉnh không kề
+//			}
+//		}
+//
+//	}
 	Comparator<Integer> descComparator = new Comparator<Integer>() {
 		@Override
 		public int compare(Integer o1, Integer o2) {
