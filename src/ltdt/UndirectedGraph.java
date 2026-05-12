@@ -1,8 +1,6 @@
 package ltdt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class UndirectedGraph extends Graph {
 
@@ -157,6 +155,104 @@ public class UndirectedGraph extends Graph {
 			}
 		}
 		return path.reversed();
+	}
+
+	public int[] graphColoringWithGreedy(){
+		int n = adjMatrix.length;
+		int[] color =  new int[n];
+		Arrays.fill(color, 0);
+		for(int i =0; i< n;i++){
+			//tô màu i
+			//danh sách màu sử dụng cho các đỉnh kề với i
+			List<Integer> listColorI = new ArrayList<>();
+			//xét các đỉnh kề với i là j, tìm xem có tô màu chưa
+			for (int j =0; j < n; j++){
+				//có cạnh kề
+				if(adjMatrix[i][j] > 0){
+					//kiểm tra xem tô màu chưa, nếu đã tô màu thì gắn vào bảng màu sửa dụng
+					if(color[j] > 0){
+						listColorI.add(color[j]);
+					}
+				}
+			}
+			//sắp xếp theo thứ tự từ nhỏ đến lớn
+			List<Integer> listColorSort = listColorI.stream().sorted().toList();
+			if(listColorSort.size()==0 || listColorSort ==null) {
+				color[i] =1;
+			}
+			else if(listColorSort.get(0) > 1 ){
+				//tô màu
+				color[i] = 1;
+			}
+			else {
+				for (int k =0; k< listColorSort.size(); k++){
+					if(checkKe(listColorSort, i) == false){
+						color[i] = listColorSort.get(k) +1;
+					}
+				}
+			}
+		}
+		return color;
+	}
+
+	public boolean checkKe(List<Integer> list, int index){
+		if(index != list.size()){
+			 return list.get(index + 1) - list.get(index) == 1;
+		}
+		else{
+			return false;
+		}
+
+	}
+
+	private int[] graphColoringWithWelshPmell(){
+		Map<Integer, Integer> ver = new TreeMap<>(descComparator);
+		int n = adjMatrix.length;
+		//duyệt qua từng đỉnh, thêm dữ liệu vào var
+		for(int i =0; i< n; i++){
+			ver.put(i, degree(i));
+		}
+		int [] color = new int[n];
+		//đánh dấu đỉnh được tô màu
+		boolean [] isColor = new boolean[n];
+		Arrays.fill(isColor, false);
+
+		int colorNumber =1;
+
+		//duyệt qua từng đỉnh
+		for(Map.Entry<Integer, Integer> entry : ver.entrySet()){
+			if(isColor[entry.getKey()] == false){
+				//nếu chưa được tô màu
+				//thực hiênj tô màu cho đỉnh đó
+				color[entry.getKey()] = colorNumber;
+				//thực hiện tô màu cho các đỉnh không kề
+			}
+		}
+
+	}
+	Comparator<Integer> descComparator = new Comparator<Integer>() {
+		@Override
+		public int compare(Integer o1, Integer o2) {
+			return o2.compareTo(o1); // So sánh o2 với o1 để giảm dần
+		}
+	};
+
+
+	public static void main(String[] args) {
+	UndirectedGraph undirectedGraph = new UndirectedGraph(5);
+	undirectedGraph.addEdge(0,1);
+		undirectedGraph.addEdge(0,2);
+		undirectedGraph.addEdge(2,1);
+		undirectedGraph.addEdge(2,3);
+		undirectedGraph.addEdge(3,1);
+		undirectedGraph.addEdge(2,4);
+		int [] graphColor = undirectedGraph.graphColoringWithGreedy();
+		for(int i =0; i< graphColor.length; i++){
+			System.out.println("Tại vị trí "+i+" sử dụng màu "+ graphColor[i]);
+		}
+
+
+
 	}
 
 }

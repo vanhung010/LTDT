@@ -33,7 +33,6 @@ public class Directed extends Graph {
 		
 	}
 
-	
 	public int inDegree(int ver) {
 		int degree =0;
 		for(int i =0 ; i< adjMatrix.length; i++) {
@@ -158,9 +157,7 @@ public class Directed extends Graph {
 return result.reversed();
 	}
 
-//	public List<Integer> findEulerPath(){
-//		if(!isSemiEuler())
-//	}
+
 
 	static void main() {
 		Directed directed = new Directed(6);
